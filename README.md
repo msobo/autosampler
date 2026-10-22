@@ -5,6 +5,8 @@ instruments as multisamples (notes, velocity layers, round robin), finds loops i
 recordings, can be played live, and exports the result as a sampler instrument
 (WAV with metadata, SFZ, Elektron Tonverk).
 
+![Autosampler](autosampler.jpg)
+
 Version 1.0.0 · macOS 13+ · arm64 · C++20 with [JUCE](https://juce.com) 9.0.4
 
 ## Installation
@@ -50,3 +52,8 @@ ctest --test-dir build --output-on-failure
 
 AGPL-3.0, see [LICENSE](LICENSE). The fonts in `Resources/Fonts` are licensed under the
 SIL Open Font License.
+
+## Support
+
+if you like this project, 
+[Support me](https://buymeacoffee.com/msobo)
