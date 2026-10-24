@@ -22,7 +22,6 @@ Get the source and build (CMake downloads JUCE itself on the first configure):
 ```bash
 git clone <repository-URL> autosampler
 cd autosampler
-git switch release/1.0.0
 
 cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
 cmake --build build --target Autosampler
