@@ -5,6 +5,7 @@
 #include <juce_audio_utils/juce_audio_utils.h>
 
 #include <map>
+#include <vector>
 
 namespace autosampler
 {
@@ -48,6 +49,9 @@ public:
 
     void setItems (juce::StringArray);
 
+    /** Farbrolle (theme::ColourIds) je Schalter für den gewählten Zustand; 0 = accent. */
+    void setActiveColourIds (std::vector<int> ids)  { activeColourIds = std::move (ids); repaint(); }
+
     /** Zeigt zwischen den Schaltern kleine >-Marker (Ablauf von links nach rechts). */
     void setFlowMarkers (bool shouldShow);
     int getSelectedIndex() const noexcept       { return selected; }
@@ -69,6 +73,7 @@ private:
     juce::StringArray items;
     int height, padding, selected = 0;
     bool showFlowMarkers = false;
+    std::vector<int> activeColourIds;
 };
 
 /** Zahlenfeld: Wert auf dem Bildschirm, daneben die Tasten − und +. */

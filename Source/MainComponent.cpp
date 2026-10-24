@@ -94,11 +94,6 @@ MainComponent::MainComponent (PluginHost& hostToUse, Appearance& appearanceToUse
         updateKeyboardMarks();
     };
 
-    sidebar.onPowerClicked = [this]
-    {
-        appearance.setMode (appearance.isDark() ? AppearanceMode::light : AppearanceMode::dark);
-        commandManager.commandStatusChanged();
-    };
     sidebar.onSampleSelected = [this] (int index) { editorView.setSelectedIndex (index); };
     editorView.onSelectionChanged = [this] (int index)
     {
@@ -134,6 +129,7 @@ MainComponent::MainComponent (PluginHost& hostToUse, Appearance& appearanceToUse
 
     // A/B: Keyboard und MIDI-In spielen das Plugin oder die Samples der Session
     sourceControl.setTooltip ("Keyboard and MIDI in play the plugin (⌘1) or the samples of the session (⌘2); A/B with ⌘B"_u);
+    sourceControl.setActiveColourIds ({ theme::pink, theme::accent });
     sourceControl.onChange = [this] (int index)
     {
         livePlayView.setSource (index == 0 ? PlaySource::plugin : PlaySource::sampler);
@@ -364,6 +360,10 @@ void MainComponent::paint (juce::Graphics& g)
     g.fillRoundedRectangle (frameBody.translated (0.0f, (float) keyboardShadow), 7.0f);
     g.fillRoundedRectangle (frameBody, 7.0f);
 
+    // Der aktive Playmode umrandet die Klaviatur in seiner Farbe
+    g.setColour (findColour (livePlayView.getSource() == PlaySource::plugin ? theme::pink : theme::accent));
+    g.drawRoundedRectangle (frameBody.reduced (1.0f), 6.0f, 2.0f);
+
     // Rahmen oben im Gehäuse
     g.setColour (ink);
     g.drawRoundedRectangle (caseF.reduced (1.5f), (float) caseRadius - 1.5f, (float) caseBorder);
@@ -427,11 +427,10 @@ void MainComponent::resized()
     velocitySlider.setBounds (sourceRow.removeFromRight (150));
     sourceRow.removeFromRight (8);
     velocityLabel.setBounds (sourceRow.removeFromRight (40));
-    sourceRow.removeFromRight (20);
-    chordToggle.setBounds (sourceRow.removeFromRight (80));
-    sourceRow.removeFromRight (8);
     sourceControl.setBounds (sourceRow.removeFromLeft (sourceControl.getPreferredWidth()).withSizeKeepingCentre (sourceControl.getPreferredWidth(), sourceControl.getPreferredHeight()));
     sourceRow.removeFromLeft (16);
+    chordToggle.setBounds (sourceRow.removeFromLeft (80));
+    sourceRow.removeFromLeft (8);
     sourceStatusLabel.setBounds (sourceRow);
 
     panel.removeFromTop (12);
@@ -818,12 +817,17 @@ void MainComponent::setSamplingActive (bool active)
 
     commandManager.commandStatusChanged();
     setStatus (active ? "Sampling in progress ..."_u : "Sampling finished");
+
+    // Nach dem Sampling spielen Keyboard und MIDI-In die frischen Samples
+    if (! active)
+        livePlayView.setSource (PlaySource::sampler);
 }
 
 void MainComponent::updateSourceButtons()
 {
     sourceControl.setSelectedIndex (livePlayView.getSource() == PlaySource::plugin ? 0 : 1, juce::dontSendNotification);
     chordToggle.setToggleState (livePlayView.isChordEnabled(), juce::dontSendNotification);
+    repaint (keyboard.getBounds().expanded (8));
 }
 
 //==============================================================================

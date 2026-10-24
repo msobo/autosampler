@@ -172,29 +172,6 @@ SidebarView::Layout SidebarView::getLayout() const
     return layout;
 }
 
-juce::Rectangle<int> SidebarView::getFooterBounds() const
-{
-    const auto layout = getLayout();
-    return layout.bezel.withTop (layout.screen.getBottom() + 6).withTrimmedBottom (4).reduced (bezelPadding + 6, 0);
-}
-
-juce::Rectangle<int> SidebarView::getPowerBounds() const
-{
-    return getFooterBounds().removeFromRight (80).expanded (4, 6);
-}
-
-void SidebarView::mouseMove (const juce::MouseEvent& event)
-{
-    setMouseCursor (getPowerBounds().contains (event.getPosition()) ? juce::MouseCursor::PointingHandCursor
-                                                                    : juce::MouseCursor::NormalCursor);
-}
-
-void SidebarView::mouseUp (const juce::MouseEvent& event)
-{
-    if (event.mouseWasClicked() && onPowerClicked != nullptr && getPowerBounds().contains (event.getPosition()))
-        onPowerClicked();
-}
-
 void SidebarView::resized()
 {
     sampleList.setBounds (getLayout().listArea);
@@ -240,24 +217,16 @@ void SidebarView::paint (juce::Graphics& g)
     }
 
     // Beschriftung unter dem Bildschirm
-    const auto footer = getFooterBounds();
+    const auto footer = layout.bezel.withTop (layout.screen.getBottom() + 6).withTrimmedBottom (4).reduced (bezelPadding + 6, 0);
     g.setColour (findColour (theme::secondaryText));
     g.setFont (uiFont (10.0f, true).withExtraKerningFactor (0.12f));
     g.drawText ("SYS-MON 01", footer, juce::Justification::centredLeft);
-    g.drawText ("NIGHT", footer.withTrimmedRight (16), juce::Justification::centredRight);
+    g.drawText ("POWER", footer.withTrimmedRight (16), juce::Justification::centredRight);
 
-    // Schalter für Hell/Dunkel: die Leuchte brennt im dunklen Erscheinungsbild
-    const auto* appLook = dynamic_cast<AppLookAndFeel*> (&getLookAndFeel());
-    const auto night = appLook == nullptr || appLook->isDark();
     const auto led = juce::Rectangle<float> (8.0f, 8.0f).withCentre ({ (float) footer.getRight() - 4.0f, (float) footer.getCentreY() });
-
-    if (night)
-    {
-        g.setColour (findColour (theme::led).withAlpha (0.35f));
-        g.fillEllipse (led.expanded (3.0f));
-    }
-
-    g.setColour (findColour (night ? theme::led : theme::switchOff));
+    g.setColour (findColour (theme::led).withAlpha (0.35f));
+    g.fillEllipse (led.expanded (3.0f));
+    g.setColour (findColour (theme::led));
     g.fillEllipse (led);
     g.setColour (ink);
     g.drawEllipse (led.reduced (0.75f), 1.5f);

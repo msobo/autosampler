@@ -15,7 +15,6 @@ namespace autosampler
     Protokoll. Jeder Lauf beginnt eine neue Session im Paketordner <Name>.asession. */
 class AutosampleView final : public juce::Component,
                              private juce::ChangeListener,
-                             private juce::ScrollBar::Listener,
                              private juce::AudioProcessorListener
 {
 public:
@@ -57,22 +56,6 @@ public:
     void lookAndFeelChanged() override;
 
 private:
-    /** Pfeil nach unten am unteren Rand: zeigt, dass weiter unten noch Einstellungen liegen; Klick scrollt eine Seite. */
-    class ScrollHint final : public juce::Component,
-                             public juce::SettableTooltipClient
-    {
-    public:
-        ScrollHint();
-        void paint (juce::Graphics&) override;
-        void mouseUp (const juce::MouseEvent&) override;
-        std::function<void()> onClick;
-    };
-
-    void scrollBarMoved (juce::ScrollBar*, double) override { updateScrollHint(); }
-    void updateScrollHint();
-
-    ScrollHint scrollHint;
-
     /** Statusleiste unten: Punkt, Titel, Beschreibung bzw. Fortschritt, Start/Abbrechen. */
     class RunBar final : public juce::Component
     {

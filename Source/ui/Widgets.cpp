@@ -133,7 +133,7 @@ void SegmentedControl::paint (juce::Graphics& g)
         const auto item = getItemBounds (i);
         const auto on = i == selected;
 
-        theme::drawKey (g, item, 7.0f, findColour (on ? theme::accent : theme::control), findColour (theme::ink), on, alpha);
+        theme::drawKey (g, item, 7.0f, findColour (on ? (i < (int) activeColourIds.size() ? activeColourIds[(size_t) i] : (int) theme::accent) : (int) theme::control), findColour (theme::ink), on, alpha);
 
         auto text = item.withTrimmedBottom ((float) theme::keyDepth).toNearestInt();
 
@@ -273,35 +273,17 @@ void PathField::paint (juce::Graphics& g)
     const auto promptWidth = juce::GlyphArrangement::getStringWidthInt (font, prompt);
     theme::drawGlowText (g, prompt, area.removeFromLeft (promptWidth), juce::Justification::centredLeft, phosphor.withAlpha (0.55f), font);
 
-    // Letzter Ordnername (mit abschließendem Schrägstrich) wird hervorgehoben
-    auto trimmed = path;
-    const auto trailing = trimmed.endsWithChar ('/') || trimmed.endsWithChar ('\\') ? trimmed.getLastCharacters (1) : juce::String();
-    trimmed = trimmed.trimCharactersAtEnd ("/\\");
-    const auto separator = juce::jmax (trimmed.lastIndexOfChar ('/'), trimmed.lastIndexOfChar ('\\'));
-    const auto last = trimmed.substring (separator + 1) + trailing;
-    auto prefix = trimmed.substring (0, separator + 1);
+    const auto last = path.contains ("/") ? path.fromLastOccurrenceOf ("/", false, false) : path;
+    const auto prefix = path.substring (0, path.length() - last.length());
+    const auto lastWidth = juce::GlyphArrangement::getStringWidthInt (font, last);
 
-    const auto width = [&font] (const juce::String& text) { return juce::GlyphArrangement::getStringWidthInt (font, text); };
-    const auto available = area.getWidth();
-
-    // Der Anfang des Pfades wird vorne gekürzt, damit das Ende sichtbar bleibt
-    if (width (prefix) + width (last) > available)
-    {
-        const auto ellipsis = juce::String (juce::CharPointer_UTF8 ("\xe2\x80\xa6"));
-        const auto room = available - width (last) - width (ellipsis);
-        auto start = 0;
-
-        while (start < prefix.length() && width (prefix.substring (start)) > room)
-            ++start;
-
-        prefix = room > 0 ? ellipsis + prefix.substring (start) : ellipsis;
-    }
-
-    const auto prefixWidth = width (prefix);
+    // Der letzte Ordnername bleibt sichtbar, der Anfang des Pfades wird gekürzt
+    const auto prefixArea = area.withTrimmedRight (lastWidth);
     g.setFont (font);
     g.setColour (phosphor.withAlpha (0.6f));
-    g.drawText (prefix, area.withWidth (prefixWidth), juce::Justification::centredLeft, false);
-    theme::drawGlowText (g, last, area.withTrimmedLeft (prefixWidth), juce::Justification::centredLeft, phosphor, font);
+    g.drawText (prefix, prefixArea, juce::Justification::centredRight, true);
+    theme::drawGlowText (g, last, area.withLeft (juce::jmax (area.getX(), prefixArea.getX() + juce::GlyphArrangement::getStringWidthInt (font, prefix))),
+                         juce::Justification::centredLeft, phosphor, font);
 }
 
 //==============================================================================

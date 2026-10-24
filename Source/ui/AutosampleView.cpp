@@ -61,15 +61,6 @@ AutosampleView::AutosampleView (PluginHost& hostToUse, Session& sessionToUse)
     addAndMakeVisible (viewport);
     viewport.setViewedComponent (&content, false);
     viewport.setScrollBarsShown (true, false);
-    viewport.getVerticalScrollBar().addListener (this);
-
-    addAndMakeVisible (scrollHint);
-    scrollHint.setTooltip ("More settings below - scroll down"_u);
-    scrollHint.onClick = [this]
-    {
-        viewport.setViewPosition (viewport.getViewPositionX(),
-                                  viewport.getViewPositionY() + viewport.getViewHeight() * 4 / 5);
-    };
 
     for (auto* section : { &notesSection, &dynamicsSection, &levelSection, &renderSection, &outputSection, &logSection })
         content.addAndMakeVisible (*section);
@@ -238,7 +229,6 @@ AutosampleView::AutosampleView (PluginHost& hostToUse, Session& sessionToUse)
 
 AutosampleView::~AutosampleView()
 {
-    viewport.getVerticalScrollBar().removeListener (this);
     stopLearning();
     host.removeChangeListener (this);
 
@@ -950,41 +940,6 @@ void AutosampleView::resized()
 {
     viewport.setBounds (getLocalBounds());
     layoutContent();
-    updateScrollHint();
-}
-
-AutosampleView::ScrollHint::ScrollHint()
-{
-    setMouseCursor (juce::MouseCursor::PointingHandCursor);
-}
-
-void AutosampleView::ScrollHint::paint (juce::Graphics& g)
-{
-    const auto centre = getLocalBounds().toFloat().getCentre();
-    juce::Path chevron;
-    chevron.startNewSubPath (centre.x - 9.0f, centre.y - 4.5f);
-    chevron.lineTo (centre.x, centre.y + 4.5f);
-    chevron.lineTo (centre.x + 9.0f, centre.y - 4.5f);
-
-    g.setColour (findColour (theme::secondaryText));
-    g.strokePath (chevron, juce::PathStrokeType (3.0f, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
-}
-
-void AutosampleView::ScrollHint::mouseUp (const juce::MouseEvent& event)
-{
-    if (event.mouseWasClicked() && onClick != nullptr)
-        onClick();
-}
-
-void AutosampleView::updateScrollHint()
-{
-    constexpr int hintWidth = 56, hintHeight = 28;
-    const auto moreBelow = viewport.getViewPositionY() + viewport.getViewHeight() < content.getHeight() - 2;
-
-    scrollHint.setBounds (getLocalBounds().withSizeKeepingCentre (hintWidth, hintHeight)
-                              .withBottomY (getHeight() - 6));
-    scrollHint.setVisible (moreBelow);
-    scrollHint.toFront (false);
 }
 
 void AutosampleView::layoutContent()

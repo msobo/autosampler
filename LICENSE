@@ -1,15 +1,14 @@
 Autosampler
 Copyright (C) 2026 Marek Sobolewski
 
-This program is free software: You may redistribute and/or modify it under the terms of the
-GNU Affero General Public License, Version 3, as published by the Free Software
-Foundation. It is distributed without any
-warranty (see the license text below).
+Dieses Programm ist freie Software: Sie können es unter den Bedingungen der
+GNU Affero General Public License, Version 3, wie von der Free Software
+Foundation veröffentlicht, weitergeben und/oder ändern. Es wird ohne jede
+Gewährleistung verteilt (siehe den Lizenztext unten).
 
-Autosampler is built on the JUCE framework, which is licensed under the AGPLv3.
-The included fonts (Rubik, VT323) are licensed under the SIL Open Font
-License; see Resources/Fonts/LICENSE.txt.
-
+Autosampler baut auf dem JUCE-Framework auf, das unter der AGPLv3 lizenziert ist.
+Die mitgelieferten Schriften (Rubik, VT323) stehen unter der SIL Open Font
+License, siehe Resources/Fonts/LICENSE.txt.
 
 ------------------------------------------------------------------------------
 

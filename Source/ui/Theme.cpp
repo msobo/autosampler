@@ -865,20 +865,6 @@ void AppLookAndFeel::positionComboBoxText (juce::ComboBox& box, juce::Label& lab
     label.setFont (getComboBoxFont (box));
 }
 
-void AppLookAndFeel::drawComboBoxTextWhenNothingSelected (juce::Graphics& g, juce::ComboBox& box, juce::Label& label)
-{
-    if (! (bool) box.getProperties()[theme::cartridgeProperty])
-    {
-        juce::LookAndFeel_V4::drawComboBoxTextWhenNothingSelected (g, box, label);
-        return;
-    }
-
-    // Platzhalter der Cartridge: volle Deckkraft an der Position des Labels
-    g.setColour (juce::Colours::black.withMultipliedAlpha (box.isEnabled() ? 1.0f : 0.45f));
-    g.setFont (getComboBoxFont (box));
-    g.drawFittedText (box.getTextWhenNothingSelected(), label.getBounds(), juce::Justification::centredLeft, 1);
-}
-
 juce::Font AppLookAndFeel::getPopupMenuFont()
 {
     return theme::getFont (theme::Face::ui, 13.0f);

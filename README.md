@@ -7,7 +7,7 @@ recordings, can be played live, and exports the result as a sampler instrument
 
 ![Autosampler](autosampler.jpg)
 
-Version 1.0.0 · macOS 13+ · arm64 · C++20 with [JUCE](https://juce.com) 9.0.4
+Version 1.0.2 · macOS 13+ · arm64 · C++20 with [JUCE](https://juce.com) 9.0.4
 
 ## Installation
 
@@ -40,13 +40,11 @@ macOS may prompt on the first launch (right-click → Open).
 Then load an installed VST3 or AU instrument, choose notes and velocities in the
 **Autosample** tab, and start sampling.
 
-## Tests (optional)
+## Changelog
 
-```bash
-cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DAUTOSAMPLER_BUILD_TESTS=ON
-cmake --build build --target AutosamplerTests
-ctest --test-dir build --output-on-failure
-```
+### 1.0.2
+
+- Keyboard & MIDI: Auto-change, Playmode-colours
 
 ## License
 

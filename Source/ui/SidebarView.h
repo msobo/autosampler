@@ -52,18 +52,10 @@ public:
     /** Wird aufgerufen, wenn ein Sample in der Liste gewählt wird. */
     std::function<void (int index)> onSampleSelected;
 
-    /** Wird aufgerufen, wenn der Schalter unter dem Bildschirm (Hell/Dunkel) angeklickt wird. */
-    std::function<void()> onPowerClicked;
-
     void paint (juce::Graphics&) override;
     void resized() override;
-    void mouseUp (const juce::MouseEvent&) override;
-    void mouseMove (const juce::MouseEvent&) override;
 
 private:
-    juce::Rectangle<int> getFooterBounds() const;
-    juce::Rectangle<int> getPowerBounds() const;
-
     // ListBoxModel
     int getNumRows() override                       { return (int) samples.size(); }
     void paintListBoxItem (int row, juce::Graphics&, int width, int height, bool selected) override;
