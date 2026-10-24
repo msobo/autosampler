@@ -274,16 +274,24 @@ void PathField::paint (juce::Graphics& g)
     theme::drawGlowText (g, prompt, area.removeFromLeft (promptWidth), juce::Justification::centredLeft, phosphor.withAlpha (0.55f), font);
 
     const auto last = path.contains ("/") ? path.fromLastOccurrenceOf ("/", false, false) : path;
-    const auto prefix = path.substring (0, path.length() - last.length());
+    auto prefix = path.substring (0, path.length() - last.length());
     const auto lastWidth = juce::GlyphArrangement::getStringWidthInt (font, last);
+    const auto room = area.getWidth() - lastWidth;
 
-    // Der letzte Ordnername bleibt sichtbar, der Anfang des Pfades wird gekürzt
-    const auto prefixArea = area.withTrimmedRight (lastWidth);
+    // Der letzte Ordnername bleibt sichtbar, der Anfang des Pfades wird links gekürzt
+    if (juce::GlyphArrangement::getStringWidthInt (font, prefix) > room)
+    {
+        while (prefix.isNotEmpty() && juce::GlyphArrangement::getStringWidthInt (font, juce::String (juce::CharPointer_UTF8 ("\xe2\x80\xa6")) + prefix) > room)
+            prefix = prefix.substring (1);
+
+        prefix = juce::String (juce::CharPointer_UTF8 ("\xe2\x80\xa6")) + prefix;
+    }
+
+    const auto prefixWidth = juce::jmin (room, juce::GlyphArrangement::getStringWidthInt (font, prefix));
     g.setFont (font);
     g.setColour (phosphor.withAlpha (0.6f));
-    g.drawText (prefix, prefixArea, juce::Justification::centredRight, true);
-    theme::drawGlowText (g, last, area.withLeft (juce::jmax (area.getX(), prefixArea.getX() + juce::GlyphArrangement::getStringWidthInt (font, prefix))),
-                         juce::Justification::centredLeft, phosphor, font);
+    g.drawText (prefix, area.withWidth (prefixWidth), juce::Justification::centredLeft, false);
+    theme::drawGlowText (g, last, area.withTrimmedLeft (prefixWidth), juce::Justification::centredLeft, phosphor, font);
 }
 
 //==============================================================================

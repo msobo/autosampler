@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.25)
 set(CMAKE_OSX_ARCHITECTURES "arm64" CACHE STRING "Zielarchitektur (Apple Silicon)")
 set(CMAKE_OSX_DEPLOYMENT_TARGET "13.0" CACHE STRING "Minimale macOS-Version")
 
-project(Autosampler VERSION 1.0.2 LANGUAGES C CXX OBJC OBJCXX)
+project(Autosampler VERSION 1.0.3 LANGUAGES C CXX OBJC OBJCXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

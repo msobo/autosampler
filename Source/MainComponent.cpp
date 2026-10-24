@@ -422,6 +422,8 @@ void MainComponent::resized()
     sourceRow.removeFromLeft (theme::getPlateWidth ("Keyboard & MIDI") + 14);
     panicButton.setBounds (sourceRow.removeFromRight (96).withSizeKeepingCentre (96, keyHeight));
     sourceRow.removeFromRight (16);
+    chordToggle.setBounds (sourceRow.removeFromRight (80));
+    sourceRow.removeFromRight (14);
     velocityValueLabel.setBounds (sourceRow.removeFromRight (44).withSizeKeepingCentre (44, 28));
     sourceRow.removeFromRight (14);
     velocitySlider.setBounds (sourceRow.removeFromRight (150));
@@ -429,8 +431,6 @@ void MainComponent::resized()
     velocityLabel.setBounds (sourceRow.removeFromRight (40));
     sourceControl.setBounds (sourceRow.removeFromLeft (sourceControl.getPreferredWidth()).withSizeKeepingCentre (sourceControl.getPreferredWidth(), sourceControl.getPreferredHeight()));
     sourceRow.removeFromLeft (16);
-    chordToggle.setBounds (sourceRow.removeFromLeft (80));
-    sourceRow.removeFromLeft (8);
     sourceStatusLabel.setBounds (sourceRow);
 
     panel.removeFromTop (12);

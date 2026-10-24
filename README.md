@@ -7,7 +7,7 @@ recordings, can be played live, and exports the result as a sampler instrument
 
 ![Autosampler](autosampler.jpg)
 
-Version 1.0.2 · macOS 13+ · arm64 · C++20 with [JUCE](https://juce.com) 9.0.4
+Version 1.0.3 · macOS 13+ · arm64 · C++20 with [JUCE](https://juce.com) 9.0.4
 
 ## Installation
 
@@ -41,6 +41,10 @@ Then load an installed VST3 or AU instrument, choose notes and velocities in the
 **Autosample** tab, and start sampling.
 
 ## Changelog
+
+### 1.0.3
+
+- ui-fixes
 
 ### 1.0.2
 

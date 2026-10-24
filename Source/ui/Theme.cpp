@@ -839,6 +839,14 @@ void AppLookAndFeel::drawComboBox (juce::Graphics& g, int width, int height, boo
     g.fillPath (arrow);
 }
 
+void AppLookAndFeel::drawComboBoxTextWhenNothingSelected (juce::Graphics& g, juce::ComboBox& box, juce::Label& label)
+{
+    // Standard zeichnet halbtransparent; auf dem Kassettenetikett ist das kaum lesbar
+    g.setColour (box.findColour (juce::ComboBox::textColourId).withMultipliedAlpha (box.isEnabled() ? 1.0f : 0.45f));
+    g.setFont (getComboBoxFont (box));
+    g.drawFittedText (box.getTextWhenNothingSelected(), label.getBounds().reduced (2, 0), label.getJustificationType(), 1);
+}
+
 juce::Font AppLookAndFeel::getComboBoxFont (juce::ComboBox& box)
 {
     if ((bool) box.getProperties()[theme::cartridgeProperty])
