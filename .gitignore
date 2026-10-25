@@ -5,4 +5,3 @@ external/
 .vscode/
 compile_commands.json
 build-release/
-dist/
