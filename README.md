@@ -10,13 +10,15 @@ recordings, can be played live, and exports the result as a sampler instrument
 Version 1.0.3 · macOS 13+ · arm64 · C++20 with [JUCE](https://juce.com) 9.0.4
 
 ## Download latest
-[Download latest](dist/Autosampler-1.0.3.dmg)
+[Download latest](https://github.com/msobo/autosampler/blob/release-clean/dist/Autosampler-1.0.3.dmg)
 
-I could only sign the app because i don't have an Apple Developer ID. So it isn't notarized. That's why macOS blocks it when you first launch it, displaying the message “Cannot open the app.” Here’s how to fix it:
+I could not sign the app because i don't have an Apple Developer ID. So it isn't notarized. That's why macOS blocks it when you first launch it, displaying the message “Cannot open the app.” Here’s how to fix it:
 
-System Preferences → Privacy & Security → “Open Anyway,” or
+System Preferences → Privacy & Security → “Open Anyway,” 
+or
 in Terminal:
-xattr -dr com.apple.quarantine /Applications/Autosampler.app
+
+```xattr -dr com.apple.quarantine /Applications/Autosampler.app```
 
 or you can build it yourself (see below).
 
