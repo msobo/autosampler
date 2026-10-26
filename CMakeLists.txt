@@ -54,6 +54,7 @@ juce_add_gui_app(Autosampler
     MICROPHONE_PERMISSION_TEXT "Wird für das Sampling von Hardware-Synthesizern benötigt."
     SEND_APPLE_EVENTS_PERMISSION_ENABLED TRUE
     SEND_APPLE_EVENTS_PERMISSION_TEXT "Einige Plugins benötigen dies, um ihre Hilfsprogramme (z. B. zur Lizenzierung) zu steuern."
+    ICON_BIG                "${CMAKE_CURRENT_SOURCE_DIR}/Resources/app-ico.jpg"
     NEEDS_CURL              FALSE
     NEEDS_WEB_BROWSER       FALSE)
 
